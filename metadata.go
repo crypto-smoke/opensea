@@ -18,6 +18,7 @@ type Attribute struct {
 	Type        string      `json:"trait_type,omitempty"`
 	DisplayType string      `json:"display_type,omitempty"`
 	Value       interface{} `json:"value"`
+	MaxValue    float64     `json:"max_value,omitempty"`
 }
 
 type API struct {
