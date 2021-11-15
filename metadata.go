@@ -3,7 +3,6 @@ package opensea
 import (
 	"encoding/json"
 	"net/http"
-	"time"
 )
 
 type Item struct {
@@ -22,20 +21,25 @@ type Attribute struct {
 }
 
 type API struct {
-	uri string
+	client *http.Client
 }
 
-func Get(tokenURI string) (*Item, error) {
-	spaceClient := http.Client{
-		Timeout: time.Second * 2, // Timeout after 2 seconds
+func New(client *http.Client) *API {
+	if client == nil {
+		client = http.DefaultClient
 	}
+	return &API{
+		client: client,
+	}
+}
 
+func (a *API) Get(tokenURI string) (*Item, error) {
 	req, err := http.NewRequest(http.MethodGet, tokenURI, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	res, err := spaceClient.Do(req)
+	res, err := a.client.Do(req)
 	if err != nil {
 		return nil, err
 	}
